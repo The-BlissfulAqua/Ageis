@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 import type { Alert, Sector, Vulnerability } from '../types';
 
@@ -50,5 +51,36 @@ export const generateIntelligenceBriefing = async (
     } catch (error) {
         console.error("Error generating intelligence briefing:", error);
         return "An error occurred while generating the AI briefing. Please check the console for details.";
+    }
+};
+
+export const generateWhatIfAnalysis = async (
+    scenario: { weather: string, time: string, sector: string }
+): Promise<string> => {
+    const prompt = `
+    As a senior border security analyst, conduct a "what-if" simulation.
+    Analyze the provided scenario and generate a concise risk assessment and tactical recommendation.
+    Format as clean markdown.
+
+    Scenario Details:
+    - Sector of Interest: ${scenario.sector}
+    - Time of Day: ${scenario.time}
+    - Weather Conditions: ${scenario.weather}
+
+    Based on these variables, provide:
+    1.  **Threat Assessment:** What is the likely change in intrusion risk? What types of threats are most probable?
+    2.  **AI Model Impact:** How might these conditions affect sensor performance (e.g., thermal in fog) and AI predictions?
+    3.  **Tactical Recommendations:** What specific, actionable steps should be taken? (e.g., "Increase drone surveillance in Sector B's northern ridge," "Re-task patrol unit 3 to the river crossing.")
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+        });
+        return response.text;
+    } catch (error) {
+        console.error("Error generating what-if analysis:", error);
+        return "An error occurred during the simulation. Please check the console.";
     }
 };

@@ -1,14 +1,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Alert, Sector, ModelTrainingData, Vulnerability, LogEntry, AlertLevel, AlertStatus, HeatmapPoint, FieldFeedback } from '../types';
+import { Dashboard, Alert, Sector, ModelTrainingData, Vulnerability, LogEntry, AlertLevel, AlertStatus, HeatmapPoint, FieldFeedback, AIModel } from '../types';
 import { SECTORS, SIMULATION_TICK_RATE_MS, FEDERATED_ROUND_TIME_MS, ADVERSARIAL_TEST_TIME_MS } from '../constants';
 import { useInterval } from '../hooks/useInterval';
 
-import DashboardView from './views/DashboardView';
-import SensorView from './views/SensorView';
-import FederatedModelView from './views/FederatedModelView';
-import PredictionView from './views/PredictionView';
-import AdversarialView from './views/AdversarialView';
+import CommandView from './views/CommandView';
+import AnalystView from './views/AnalystView';
 import FieldAgentView from './views/FieldAgentView';
 
 const generateInitialSectors = (): Sector[] => 
@@ -29,7 +26,14 @@ const generateInitialSectors = (): Sector[] =>
     modelContribution: Math.random() * 0.1 + 0.05,
   }));
 
-const DashboardController: React.FC<{ currentView: View }> = ({ currentView }) => {
+const initialAIModels: AIModel[] = [
+    { id: 'model-1', name: 'Thermal Anomaly Detection', status: 'ONLINE', accuracy: 0.98, latency: 50, enabled: true },
+    { id: 'model-2', name: 'Predictive Pathing AI', status: 'ONLINE', accuracy: 0.94, latency: 120, enabled: true },
+    { id: 'model-3', name: 'Seismic Pattern Analysis', status: 'TRAINING', accuracy: 0.88, latency: 250, enabled: false },
+    { id: 'model-4', name: 'Drone Optical Recognition', status: 'OFFLINE', accuracy: 0.96, latency: 80, enabled: false },
+];
+
+const DashboardController: React.FC<{ currentDashboard: Dashboard }> = ({ currentDashboard }) => {
     const [sectors, setSectors] = useState<Sector[]>(generateInitialSectors);
     const [alerts, setAlerts] = useState<Alert[]>([]);
     const [modelTrainingData, setModelTrainingData] = useState<ModelTrainingData[]>([{ round: 0, accuracy: 0.75 }]);
@@ -37,6 +41,7 @@ const DashboardController: React.FC<{ currentView: View }> = ({ currentView }) =
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [heatmapPoints, setHeatmapPoints] = useState<HeatmapPoint[]>([]);
     const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
+    const [aiModels, setAiModels] = useState<AIModel[]>(initialAIModels);
 
     const addLog = useCallback((message: string) => {
         setLogs(prev => [{
@@ -55,6 +60,22 @@ const DashboardController: React.FC<{ currentView: View }> = ({ currentView }) =
         addLog(`Alert ${alertId.slice(-6)} status updated to ${status} by field agent${feedbackMsg}${photoMsg}.`);
         if (status === AlertStatus.Confirmed || status === AlertStatus.FalseAlarm) {
             addLog(`Feedback recorded. Model will be updated in next federated cycle.`);
+        }
+    }, [addLog]);
+
+    const handleToggleAIModel = useCallback((modelId: string) => {
+        let modelName = '';
+        let isEnabled;
+        setAiModels(prev => prev.map(m => {
+            if (m.id === modelId) {
+                modelName = m.name;
+                isEnabled = !m.enabled;
+                return { ...m, enabled: !m.enabled }
+            }
+            return m;
+        }));
+        if(modelName) {
+            addLog(`AI Model '${modelName}' has been ${isEnabled ? 'enabled' : 'disabled'} by operator.`);
         }
     }, [addLog]);
 
@@ -184,14 +205,11 @@ const DashboardController: React.FC<{ currentView: View }> = ({ currentView }) =
         updateAlertStatus: handleUpdateAlertStatus,
     };
 
-    switch (currentView) {
-        case 'dashboard': return <DashboardView {...commonProps} />;
-        case 'sensors': return <SensorView sectors={sectors} />;
-        case 'federated': return <FederatedModelView modelTrainingData={modelTrainingData} sectors={sectors} />;
-        case 'predictions': return <PredictionView heatmapPoints={heatmapPoints} alerts={alerts} />;
-        case 'adversarial': return <AdversarialView vulnerabilities={vulnerabilities} />;
+    switch (currentDashboard) {
+        case 'command': return <CommandView {...commonProps} aiModels={aiModels} onToggleAIModel={handleToggleAIModel} />;
+        case 'analyst': return <AnalystView {...commonProps} />;
         case 'field': return <FieldAgentView alerts={alerts} updateAlertStatus={handleUpdateAlertStatus} />;
-        default: return <DashboardView {...commonProps} />;
+        default: return <CommandView {...commonProps} aiModels={aiModels} onToggleAIModel={handleToggleAIModel} />;
     }
 };
 

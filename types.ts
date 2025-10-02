@@ -1,5 +1,7 @@
+export type Dashboard = 'command' | 'analyst' | 'field';
 
-export type View = 'dashboard' | 'sensors' | 'federated' | 'predictions' | 'adversarial' | 'field';
+// Fix: Add View type for analyst dashboard navigation
+export type View = 'dashboard' | 'sensors' | 'model' | 'predictions' | 'adversarial' | 'logs';
 
 export enum AlertLevel {
     Low = 'Low',
@@ -70,4 +72,13 @@ export interface HeatmapPoint {
     lat: number;
     lng: number;
     intensity: number;
+}
+
+export interface AIModel {
+  id: string;
+  name: string;
+  status: 'ONLINE' | 'OFFLINE' | 'TRAINING';
+  accuracy: number;
+  latency: number; // in ms
+  enabled: boolean;
 }

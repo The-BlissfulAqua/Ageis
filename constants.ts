@@ -1,7 +1,17 @@
 // Fix: Add React import to be able to use React.ElementType
 import React from 'react';
-import { View } from './types';
-import { LayoutDashboard, Rss, BrainCircuit, Map, ShieldAlert, Smartphone } from 'lucide-react';
+// Fix: Add icon imports for NAVIGATION_ITEMS
+import {
+    LayoutDashboard,
+    Wifi,
+    Cpu,
+    Map,
+    ShieldAlert,
+    FileText,
+} from 'lucide-react';
+// Fix: Add View type import
+import type { View } from './types';
+
 
 export const SIMULATION_TICK_RATE_MS = 2000;
 export const FEDERATED_ROUND_TIME_MS = 10000;
@@ -13,11 +23,12 @@ export const SECTORS: { id: number, name: string, description: string, sensors: 
     { id: 3, name: 'Sector C', description: 'Forest', sensors: ['seismic', 'patrol'] },
 ];
 
+// Fix: Define and export NAVIGATION_ITEMS constant for the analyst sidebar.
 export const NAVIGATION_ITEMS: { id: View; name: string; icon: React.ElementType }[] = [
-    { id: 'dashboard', name: 'Commander Dashboard', icon: LayoutDashboard },
-    { id: 'sensors', name: 'Live Sensors', icon: Rss },
-    { id: 'federated', name: 'Federated AI Model', icon: BrainCircuit },
-    { id: 'predictions', name: 'Predictive Heatmap', icon: Map },
-    { id: 'adversarial', name: 'Adversarial Test Panel', icon: ShieldAlert },
-    { id: 'field', name: 'Field Agent View', icon: Smartphone },
+    { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
+    { id: 'sensors', name: 'Sensor Grid', icon: Wifi },
+    { id: 'model', name: 'AI Model', icon: Cpu },
+    { id: 'predictions', name: 'Predictions', icon: Map },
+    { id: 'adversarial', name: 'Adversarial AI', icon: ShieldAlert },
+    { id: 'logs', name: 'Command Log', icon: FileText },
 ];
