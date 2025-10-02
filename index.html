@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-g" />
+    <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aegis: Predictive Border Security Dashboard</title>
+    <script>
+      // Polyfill for process.env to prevent crashes in browser environments
+      // where it's not defined. The actual API_KEY needs to be provided
+      // by the deployment environment for API calls to succeed.
+      window.process = window.process || { env: {} };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
