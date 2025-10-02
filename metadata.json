@@ -1,0 +1,5 @@
+{
+  "name": "Aegis: Predictive Border Security Dashboard",
+  "description": "A real-time command & control platform that detects intrusions, predicts risks, and incorporates human feedback using federated learning and explainable AI.",
+  "requestFramePermissions": []
+}

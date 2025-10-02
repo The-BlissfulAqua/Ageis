@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-g" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aegis: Predictive Border Security Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-bg': '#0a101f',
+              'brand-surface': '#121a2e',
+              'brand-border': '#2a344d',
+              'brand-text-primary': '#f0f4f8',
+              'brand-text-secondary': '#a0aec0',
+              'brand-accent': '#38bdf8',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            keyframes: {
+              pulse_red: {
+                '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+                '50%': { opacity: 0.7, transform: 'scale(1.05)' },
+              },
+              pulse_yellow: {
+                '0%, 100%': { opacity: 1 },
+                '50%': { opacity: 0.8 },
+              },
+            },
+            animation: {
+              'pulse-red': 'pulse_red 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'pulse-yellow': 'pulse_yellow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+{
+  "imports": {
+    "react/jsx-runtime": "https://aistudiocdn.com/react@^19.2.0/jsx-runtime",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.22",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.544.0",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-brand-bg text-brand-text-primary">
+    <div id="root"></div>
+  </body>
+</html>
